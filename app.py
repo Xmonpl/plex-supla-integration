@@ -7,9 +7,8 @@ app = Flask(__name__)
 
 def sendAction(json, suplaUrl, suplaCode, suplaAction, plexEvent, plexUser):
     if json['Player']['uuid'] == plexUser and json['event'] == plexEvent:
-        data = {'code': suplaCode, 'action': suplaAction}
-        header = {"Content-Type": "application/json"}
-        requests.patch(suplaUrl, data, headers=header)
+        header = {"Content-Type": "application/json", "Accept": "application/json"}
+        requests.patch(suplaUrl, data='{"code":"' + suplaCode +'", "action":"' + suplaAction + '"}', headers=header)
 
 @app.route('/', methods=['GET'])
 def main():
