@@ -5,6 +5,12 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+def sendAction(json, suplaUrl, suplaCode, suplaAction, plexEvent, plexUser):
+    if json['Player']['uuid'] == plexUser and json['event'] == plexEvent:
+        data = {'code': suplaCode, 'action': suplaAction}
+        header = {"Content-Type": "application/json"}
+        requests.patch(suplaUrl, data, headers=header)
+
 @app.route('/', methods=['GET'])
 def main():
     return "Plex <-> Supla WebHook Listener by Xmon <a href='https://Xmon.eu.org/' targen='_BLANK'>https://Xmon.eu.org/</a>"
@@ -27,8 +33,3 @@ def webhook():
 app.run(host='0.0.0.0', port=8000)
 
 
-def sendAction(json, suplaUrl, suplaCode, suplaAction, plexEvent, plexUser):
-    if json['Player']['uuid'] == plexUser && json['event'] == plexEvent:
-        data = {'code': suplaCode, 'action': suplaAction}
-        header = {"Content-Type": "application/json"}
-        requests.patch(suplaUrl, data, headers=header)
